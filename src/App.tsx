@@ -7,11 +7,12 @@ import AppointmentConfirmation from './components/AppointmentConfirmation'
 
 function App() {
   const currentScreen = useSelector((state: RootState) => state.appointments.currentScreen)
+  const editingAppointment = useSelector((state: RootState) => state.appointments.editingAppointment)
 
   return (
     <>
       {currentScreen === 'dashboard' && <Dashboard />}
-      {currentScreen === 'booking' && <BookingForm />}
+      {currentScreen === 'booking' && <BookingForm key={editingAppointment?.id || 'new'} />}
       {currentScreen === 'confirmation' && <AppointmentConfirmation />}
     </>
   )

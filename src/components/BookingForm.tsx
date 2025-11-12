@@ -1,16 +1,39 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addAppointment, setScreen, setLastBookedAppointment } from '../store/appointmentsSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
+import { addAppointment, updateAppointment, setScreen, setLastBookedAppointment, setEditingAppointment } from '../store/appointmentsSlice'
 import { trainers, getAvailableTimeSlotsForTrainer } from '../data/trainers'
 import type { Appointment } from '../data/appointments'
 import Calendar from './Calendar'
 import Header from './Header'
+import { parseAppointmentDateTime } from '../data/appointments'
 
 function BookingForm() {
   const dispatch = useDispatch()
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [selectedTrainerId, setSelectedTrainerId] = useState<string>('')
-  const [selectedTime, setSelectedTime] = useState<string>('')
+  const editingAppointment = useSelector((state: RootState) => state.appointments.editingAppointment)
+  
+  const getInitialValues = () => {
+    if (editingAppointment) {
+      const appointmentDate = parseAppointmentDateTime(editingAppointment.date, editingAppointment.time)
+      const trainer = trainers.find(t => t.name === editingAppointment.providerName)
+      
+      return {
+        date: appointmentDate,
+        trainerId: trainer?.id || '',
+        time: editingAppointment.time
+      }
+    }
+    return {
+      date: null as Date | null,
+      trainerId: '',
+      time: ''
+    }
+  }
+  
+  const initialValues = getInitialValues()
+  const [selectedDate, setSelectedDate] = useState<Date | null>(initialValues.date)
+  const [selectedTrainerId, setSelectedTrainerId] = useState<string>(initialValues.trainerId)
+  const [selectedTime, setSelectedTime] = useState<string>(initialValues.time)
 
   const formatDateToString = (date: Date): string => {
     const year = date.getFullYear()
@@ -32,16 +55,28 @@ function BookingForm() {
     const selectedTrainer = trainers.find(t => t.id === selectedTrainerId)
     if (!selectedTrainer) return
 
-    const newAppointment: Appointment = {
-      id: Date.now().toString(),
-      providerName: selectedTrainer.name,
-      date: formatDateToString(selectedDate),
-      time: selectedTime
+    if (editingAppointment) {
+      const updatedAppointment: Appointment = {
+        id: editingAppointment.id,
+        providerName: selectedTrainer.name,
+        date: formatDateToString(selectedDate),
+        time: selectedTime
+      }
+      dispatch(updateAppointment(updatedAppointment))
+      dispatch(setLastBookedAppointment(updatedAppointment))
+      dispatch(setEditingAppointment(null))
+      dispatch(setScreen('confirmation'))
+    } else {
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        providerName: selectedTrainer.name,
+        date: formatDateToString(selectedDate),
+        time: selectedTime
+      }
+      dispatch(addAppointment(newAppointment))
+      dispatch(setLastBookedAppointment(newAppointment))
+      dispatch(setScreen('confirmation'))
     }
-
-    dispatch(addAppointment(newAppointment))
-    dispatch(setLastBookedAppointment(newAppointment))
-    dispatch(setScreen('confirmation'))
   }
 
   const isToday = (date: Date): boolean => {
@@ -88,7 +123,7 @@ function BookingForm() {
       <Header />
       <div className="booking-container">
         <div className="booking-header">
-          <h1 className="booking-title">Book a visit</h1>
+          <h1 className="booking-title">{editingAppointment ? 'Edit Appointment' : 'Book a visit'}</h1>
           <p className="booking-subtitle">Choose a date to see available times.</p>
         </div>
 
@@ -98,7 +133,10 @@ function BookingForm() {
           </div>
 
           <div className="booking-right">
-            {trainers.map((trainer) => {
+            {(editingAppointment
+              ? trainers.filter(trainer => trainer.name === editingAppointment.providerName)
+              : trainers
+            ).map((trainer) => {
               const allTimeSlots = selectedDate
                 ? getAvailableTimeSlotsForTrainer(trainer.id)
                 : []
@@ -166,7 +204,7 @@ function BookingForm() {
               onClick={handleBookVisit}
               disabled={!canBook}
             >
-              Book this visit
+              {editingAppointment ? 'Update Appointment' : 'Book this visit'}
             </button>
           </div>
         </div>

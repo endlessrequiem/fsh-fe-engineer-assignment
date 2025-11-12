@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setScreen } from '../store/appointmentsSlice'
+import { setScreen, setEditingAppointment } from '../store/appointmentsSlice'
 import type { RootState } from '../store/store'
 import { trainers } from '../data/trainers'
 import Header from './Header'
@@ -65,9 +65,12 @@ function AppointmentConfirmation() {
           </div>
 
           <div className="confirmation-buttons">
-            <button
+            <button 
               className="back-to-dashboard-button"
-              onClick={() => dispatch(setScreen('dashboard'))}
+              onClick={() => {
+                dispatch(setEditingAppointment(null))
+                dispatch(setScreen('dashboard'))
+              }}
             >
               Back to Dashboard
             </button>
