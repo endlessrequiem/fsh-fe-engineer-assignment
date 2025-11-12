@@ -1,5 +1,7 @@
 import logo from '../assets/logo.png'
 import {UserIcon} from "../assets/UserIcon.tsx";
+import {HamburgerMenu} from "./HamburgerMenu.tsx";
+import {ChevronDown} from "../assets/ChevronDown.tsx";
 
 function Header() {
   return (
@@ -15,13 +17,10 @@ function Header() {
             <UserIcon />
           </div>
           <span className="user-name">Austin White</span>
+          <ChevronDown />
         </div>
         <button className="hamburger-menu mobile-only" aria-label="Menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12H21" stroke="#6A34C0" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M3 6H21" stroke="#6A34C0" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M3 18H21" stroke="#6A34C0" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
+          <HamburgerMenu />
         </button>
       </div>
     </header>

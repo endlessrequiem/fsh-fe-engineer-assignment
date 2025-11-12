@@ -275,6 +275,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  object-fit: cover;
 }
 
 .trainer-placeholder {
@@ -661,6 +662,110 @@
   .add-to-calendar-button {
     flex: 1;
   }
+
+  /* Dashboard mobile styles */
+  .dashboard-container {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .book-appointment-button {
+    width: 100%;
+  }
+
+  .appointments-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .appointment-card {
+    padding: 16px;
+  }
+
+  .appointment-card-expanded {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .appointment-card-expanded .appointments-lists-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  /* Search input mobile styles */
+  .dashboard-search {
+    margin-bottom: 24px;
+  }
+
+  .search-input {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  /* Delete Confirmation Dialog mobile styles */
+  .delete-confirmation-dialog {
+    padding: 24px;
+    width: 95%;
+  }
+
+  .delete-confirmation-title {
+    font-size: 24px;
+  }
+
+  .delete-confirmation-message {
+    font-size: 14px;
+  }
+
+  .delete-confirmation-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .delete-confirmation-cancel-button,
+  .delete-confirmation-delete-button {
+    width: 100%;
+  }
+
+  /* Appointment Detail mobile styles */
+  .appointment-detail-container {
+    padding: 20px 16px;
+  }
+
+  .appointment-detail-card {
+    padding: 32px 24px;
+  }
+
+  .appointment-detail-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .appointment-detail-title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .back-button {
+    width: 100%;
+  }
+
+  .appointments-lists-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
 }
 
 @media (max-width: 968px) {
@@ -721,6 +826,7 @@
   width: 100%;
   margin-bottom: 64px;
   box-shadow: 0 2px 2px 0 rgb(215, 215, 215), 0 2px 2px 0 rgb(215, 215, 215);
+  overflow: hidden;
 }
 
 .appointment-trainer-info {
@@ -731,7 +837,7 @@
 
 
 .appointment-trainer-image {
-    width: 120px;
+    width: 140px;
     height: 140px;
     align-self: center;
     overflow: hidden;
@@ -740,7 +846,7 @@
 .appointment-trainer-image img {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  object-fit: cover;
 }
 
 .appointment-trainer-details {
@@ -830,3 +936,364 @@
   background-color: var(--color-light);
 }
 
+/* Dashboard Page Styles */
+.dashboard-page {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.dashboard-search {
+  margin-bottom: 32px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-dark);
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 3px rgba(106, 52, 192, 0.1);
+}
+
+.search-input-wrapper:focus-within .search-icon path {
+  stroke: var(--color-main);
+}
+
+.search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.dashboard-title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  margin: 0;
+}
+
+.book-appointment-button {
+  padding: 12px 24px;
+  background-color: var(--color-main);
+  color: white;
+  border: none;
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.book-appointment-button:hover {
+    background-color: var(--color-dark);
+}
+
+.edit-appointment-button {
+    background-color: var(--color-main);
+    color: white;
+    border: none;
+    border-radius: var(--button-border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.book-appointment-button:hover {
+    background-color: var(--color-dark);
+}
+
+.cancel-appointment-button {
+    flex: 1;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    border-radius: var(--button-border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-appointment-button:hover {
+    border: 1px solid rgba(255, 0, 0, 0.25);
+}
+
+.book-appointment-button:hover {
+  background-color: var(--color-dark);
+}
+
+.appointments-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-dark);
+  margin: 0 0 24px 0;
+}
+
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.appointment-card {
+  background-color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+.appointment-card:hover:not(.expanded) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.appointment-card.expanded {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  grid-row: span 1;
+}
+
+.appointment-card:not(.expanded) .appointment-card-expanded {
+  display: none;
+}
+
+.appointment-card-main {
+  display: flex;
+  gap: 16px;
+}
+
+.appointment-card-image {
+  width: 130px;
+}
+
+.appointment-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.appointment-card-expanded img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.appointment-card-content {
+  flex: 1;
+}
+
+.appointment-card-name {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  margin: 0 0 0 0;
+  padding-top: 8px;
+}
+
+.appointment-card-specialization {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: #6B7280;
+  margin: 0 0 8px 0;
+}
+
+.appointment-card-date {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark);
+  margin: 0 0 0 0;
+}
+
+.appointment-card-time {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark);
+    padding-bottom: 8px;
+  margin: 0;
+}
+
+.appointment-card.past-appointment {
+  opacity: 0.5;
+}
+
+.appointment-card.past-appointment .appointment-card-name,
+.appointment-card.past-appointment .appointment-card-specialization,
+.appointment-card.past-appointment .appointment-card-date,
+.appointment-card.past-appointment .appointment-card-time {
+  color: #9CA3AF;
+}
+
+.appointment-card.past-appointment:hover {
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-card-expanded {
+  margin-top: 24px;
+  padding: 24px;
+  border-top: 1px solid #E5E7EB;
+  animation: expandCard 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@keyframes expandCard {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+
+.appointment-card-expanded .appointments-lists-section {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.no-appointments {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: #6B7280;
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+/* Delete Confirmation Dialog Styles */
+.delete-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-confirmation-dialog {
+  background-color: white;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.delete-confirmation-title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-dark);
+  margin: 0 0 16px 0;
+}
+
+.delete-confirmation-message {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-dark);
+  margin: 0 0 24px 0;
+  line-height: var(--line-height);
+}
+
+.delete-confirmation-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.delete-confirmation-cancel-button {
+  padding: 12px 24px;
+  background-color: white;
+  color: var(--color-main);
+  border: 1px solid var(--color-main);
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-confirmation-cancel-button:hover {
+  background-color: var(--color-light);
+}
+
+.delete-confirmation-delete-button {
+  padding: 12px 24px;
+  background-color: var(--color-error);
+  color: white;
+  border: none;
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-confirmation-delete-button:hover {
+  background-color: #DC2626;
+}
