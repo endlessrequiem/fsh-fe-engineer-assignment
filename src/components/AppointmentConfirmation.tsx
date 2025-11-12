@@ -4,23 +4,11 @@ import type { RootState } from '../store/store'
 import { trainers } from '../data/trainers'
 import Header from './Header'
 import {CircleConfirmed} from "../assets/CircleConfirmed.tsx";
+import {formatDate} from "../consts/date.ts";
 
 function AppointmentConfirmation() {
   const dispatch = useDispatch()
   const lastBookedAppointment = useSelector((state: RootState) => state.appointments.lastBookedAppointment)
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString + 'T00:00:00')
-    const days = ['Sun.', 'Mon.', 'Tues.', 'Wed.', 'Thurs.', 'Fri.', 'Sat.']
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-    const dayName = days[date.getDay()]
-    const month = months[date.getMonth()]
-    const day = String(date.getDate()).padStart(2, '0')
-    const year = date.getFullYear()
-
-    return `${dayName}, ${month} ${day}, ${year}`
-  }
 
   const formatTime = (timeString: string): string => {
     const [time, period] = timeString.split(' ')
@@ -79,7 +67,7 @@ function AppointmentConfirmation() {
           <div className="confirmation-buttons">
             <button
               className="back-to-dashboard-button"
-              onClick={() => dispatch(setScreen('list'))}
+              onClick={() => dispatch(setScreen('dashboard'))}
             >
               Back to Dashboard
             </button>

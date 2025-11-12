@@ -8,38 +8,51 @@ export type Appointment = {
 export const upcomingAppointments: Appointment[] = [
     {
         id: '1',
-        providerName: 'Dr. A',
+        providerName: 'Nicole Smith',
         date: '2026-01-16',
         time: '10:00 AM'
     },
     {
         id: '2',
-        providerName: 'Dr. B',
+        providerName: 'John Brown',
         date: '2026-01-16',
         time: '2:30 PM'
     },
     {
         id: '3',
-        providerName: 'Dr. C',
+        providerName: 'Emily Davis',
         date: '2026-01-17',
         time: '9:15 AM'
     },
     {
         id: '4',
-        providerName: 'Dr. B',
-        date: '2025-11-17',
+        providerName: 'Emily Davis',
+        date: '2025-11-10',
         time: '9:15 AM'
     },
     {
         id: '5',
-        providerName: 'Dr. E',
+        providerName: 'John Brown',
         date: '2025-11-11',
         time: '9:15 AM'
     },
 
 ]
 
-const now = new Date()
+export function futureAppointments(appointments: Appointment[]) {
+    const now = new Date()
+
+    return appointments.filter((appointment) => {
+        const appointmentDateTime = parseAppointmentDateTime(appointment.date, appointment.time)
+        return appointmentDateTime.getTime() > now.getTime()
+    })
+        .sort((a, b) => {
+            const dateA = parseAppointmentDateTime(a.date, a.time)
+            const dateB = parseAppointmentDateTime(b.date, b.time)
+            return dateA.getTime() - dateB.getTime()
+        })
+}
+
 
 export const parseAppointmentDateTime = (date: string, time: string): Date => {
     const [year, month, day] = date.split('-').map(Number)
@@ -56,14 +69,3 @@ export const parseAppointmentDateTime = (date: string, time: string): Date => {
     return new Date(year, month - 1, day, hour24, minutes)
 }
 
-export const sortedAppointments = [...upcomingAppointments].sort((a, b) => {
-    const dateA = parseAppointmentDateTime(a.date, a.time)
-    const dateB = parseAppointmentDateTime(b.date, b.time)
-    return dateA.getTime() - dateB.getTime()
-})
-
-
-export const nextAppointments = sortedAppointments.filter((appointment) => {
-    const appointmentDateTime = parseAppointmentDateTime(appointment.date, appointment.time)
-    return appointmentDateTime.getTime() > now.getTime()
-})

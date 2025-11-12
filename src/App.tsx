@@ -1,7 +1,7 @@
 import './App.css'
 import { useSelector } from 'react-redux'
 import type { RootState } from './store/store'
-import AppointmentsList from './components/AppointmentsList'
+import Dashboard from './components/Dashboard'
 import BookingForm from './components/BookingForm'
 import AppointmentConfirmation from './components/AppointmentConfirmation'
 
@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      {currentScreen === 'list' && <AppointmentsList />}
+      {currentScreen === 'dashboard' && <Dashboard />}
       {currentScreen === 'booking' && <BookingForm />}
       {currentScreen === 'confirmation' && <AppointmentConfirmation />}
     </>
