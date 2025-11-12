@@ -63,7 +63,7 @@ export const sortedAppointments = [...upcomingAppointments].sort((a, b) => {
 })
 
 
-export const futureAppointments = sortedAppointments.filter((appointment) => {
+export const nextAppointments = sortedAppointments.filter((appointment) => {
     const appointmentDateTime = parseAppointmentDateTime(appointment.date, appointment.time)
     return appointmentDateTime.getTime() > now.getTime()
 })

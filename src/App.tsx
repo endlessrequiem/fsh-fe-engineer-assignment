@@ -1,5 +1,5 @@
 import './App.css'
-import {futureAppointments} from "./data/appointments.ts";
+import {nextAppointments} from "./data/appointments.ts";
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
       <div>
         <h1>Upcoming Appointments</h1>
         <ul>
-          {futureAppointments.map((appointment) => (
+          {nextAppointments.map((appointment) => (
             <li key={appointment.id}>
               <div>
                 <span>Provider: {appointment.providerName}</span>
