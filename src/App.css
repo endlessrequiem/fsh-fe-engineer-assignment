@@ -1,0 +1,832 @@
+/* Design Tokens */
+:root {
+  --color-light: #F5F3FF;
+  --color-main: #6A34C0;
+  --color-dark: #1E1B4B;
+  --color-background: #f4f4f5;
+  --color-error: #EF4444;
+  --color-gray: #c4c4c4;
+  --color-user-icon: #053748;
+  --font-family: Helvetica, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-size-heading: 32px;
+  --font-size-subheading: 18px;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height: 1.5;
+  --calendar-day-border-radius: 50px;
+  --button-border-radius: 24px;
+}
+
+/* Header Styles */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: white;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-image {
+  height: 32px;
+  width: auto;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-dark);
+}
+
+/* Booking Page Styles */
+.booking-page {
+  min-height: 100vh;
+}
+
+.booking-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.booking-header {
+  margin-bottom: 32px;
+}
+
+.booking-title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  margin: 0 0 8px 0;
+}
+
+.booking-subtitle {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-main);
+}
+
+.booking-content {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+.booking-left {
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 36px;
+  margin-right: 16px;
+}
+
+.booking-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Calendar Styles */
+.calendar {
+  width: 100%;
+  border: 2px solid var(--color-main);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-nav-button-container {
+    display: flex;
+}
+
+.calendar-nav-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--color-main);
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-nav-button:hover:not(:disabled) {
+  background-color: var(--color-light);
+  border-radius: 4px;
+}
+
+.calendar-nav-button.disabled,
+.calendar-nav-button:disabled {
+  color: #9CA3AF;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.calendar-nav-button.disabled:hover,
+.calendar-nav-button:disabled:hover {
+  background-color: transparent;
+}
+
+.calendar-month-year {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  margin: 0;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: var(--font-weight-bold);
+  color: #6B7280;
+  padding: 8px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  cursor: pointer;
+  border-radius: var(--calendar-day-border-radius);
+  background-color: var(--color-light);
+  transition: all 0.2s;
+  position: relative;
+}
+
+.calendar-day-number {
+  display: block;
+}
+
+.calendar-day-indicator {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.calendar-day:hover:not(.disabled):not(.empty) {
+  background-color: var(--color-light);
+  border-radius: var(--calendar-day-border-radius);
+}
+
+.calendar-day.disabled {
+  color: #D1D5DB;
+  cursor: not-allowed;
+  background-color: var(--color-background);
+}
+
+.calendar-day.selected {
+  background-color: var(--color-main);
+  border-radius: var(--calendar-day-border-radius);
+  color: white;
+}
+
+.calendar-day.empty {
+  cursor: default;
+  background-color: var(--color-background);
+}
+
+/* Trainer Card Styles */
+.trainer-card {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.trainer-info {
+  display: flex;
+  gap: 16px;
+  border: 1px solid var(--color-gray);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.trainer-image {
+  width: 100px;
+  height: 120px;
+  align-self: center;
+}
+
+.trainer-image img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.trainer-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+}
+
+.trainer-details {
+  flex: 1;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 16px;
+}
+
+.trainer-name {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-main);
+  margin: 0 0 4px 0;
+}
+
+.trainer-specialization {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: #6B7280;
+  margin: 0;
+}
+
+.time-slots {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.time-slot-button {
+  padding: 8px 16px;
+  border: 1px solid var(--color-gray);
+  background-color: white;
+  color: var(--color-main);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.time-slot-button:hover {
+  background-color: var(--color-light);
+  border-color: var(--color-main);
+}
+
+.time-slot-button.selected {
+  background-color: var(--color-main);
+  color: white;
+  border-color: var(--color-main);
+}
+
+.no-slots {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Footer Styles */
+.booking-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.footer-left {
+  flex-direction: column;
+}
+
+.help-text {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  display: flex;
+  flex-direction: column;
+  color: #6B7280;
+}
+
+.help-link {
+  color: var(--color-main);
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+}
+
+.help-link:hover {
+  text-decoration: underline;
+}
+
+.footer-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.book-button {
+  padding: 12px 128px;
+  background-color: var(--color-main);
+  color: white;
+  border: none;
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.book-button:hover:not(.disabled) {
+  background-color: var(--color-dark);
+}
+
+.book-button.disabled {
+  background-color: #D1D5DB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+/* Mobile/Tablet visibility utilities */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .booking-content {
+    grid-template-columns: 350px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header mobile styles */
+  .app-header {
+    padding: 16px 20px;
+  }
+
+  .logo-image {
+    height: 24px;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .hamburger-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Booking page mobile styles */
+  .booking-container {
+    padding: 20px 16px;
+  }
+
+  .booking-header {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .booking-title {
+    font-size: 24px;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .booking-subtitle {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .booking-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .booking-left {
+    order: 1;
+    margin-top: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .calendar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .booking-right {
+    order: 2;
+    gap: 16px;
+  }
+
+  /* Calendar mobile styles */
+  .calendar-header {
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .calendar-month-year {
+    font-size: 16px;
+    text-align: center;
+    flex: 1;
+  }
+
+  .calendar-nav-button-container {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .calendar-nav-button {
+    pointer-events: all;
+    font-size: 20px;
+  }
+
+  .calendar-weekday {
+    font-size: 12px;
+    padding: 6px 4px;
+  }
+
+  .calendar-day {
+    font-size: 14px;
+  }
+
+  .calendar-day-indicator {
+    width: 3px;
+    height: 3px;
+    bottom: 3px;
+  }
+
+  /* Trainer card mobile styles */
+  .trainer-card {
+    padding: 16px;
+    text-align: center;
+  }
+
+  .trainer-info {
+    margin-bottom: 12px;
+  }
+
+  .trainer-image {
+    width: 80px;
+    height: 96px;
+  }
+
+  .trainer-details {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 12px;
+    text-align: left;
+  }
+
+  .trainer-name {
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .trainer-specialization {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .time-slots {
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .time-slot-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  /* Footer mobile styles */
+  .booking-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .footer-left {
+    order: 2;
+  }
+
+  .help-text {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .footer-right {
+    order: 1;
+    justify-content: stretch;
+  }
+
+  .book-button {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+
+  /* Confirmation page mobile styles */
+  .confirmation-container {
+    padding: 20px 16px;
+    min-height: calc(100vh - 60px);
+  }
+
+  .confirmation-card {
+    padding: 32px 24px;
+  }
+
+  .confirmation-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .appointment-details-box {
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .appointment-trainer-info {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .appointment-trainer-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .appointment-trainer-name {
+    font-size: 16px;
+  }
+
+  .appointment-trainer-specialization {
+    font-size: 14px;
+  }
+
+  .appointment-date,
+  .appointment-time {
+    font-size: 14px;
+  }
+
+  .confirmation-buttons {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .back-to-dashboard-button,
+  .add-to-calendar-button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 968px) {
+  .booking-content {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-left {
+    order: 1;
+  }
+
+  .booking-right {
+    order: 2;
+  }
+}
+
+/* Confirmation Page Styles */
+.confirmation-page {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+}
+
+.confirmation-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 48px;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-icon {
+  margin-bottom: 24px;
+}
+
+.confirmation-title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-dark);
+  margin: 0 0 32px 0;
+  text-align: center;
+}
+
+.appointment-details-box {
+  background-color: #F9FAFB;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 64px;
+  box-shadow: 0 2px 2px 0 rgb(215, 215, 215), 0 2px 2px 0 rgb(215, 215, 215);
+}
+
+.appointment-trainer-info {
+  display: flex;
+  gap: 16px;
+}
+
+
+
+.appointment-trainer-image {
+    width: 120px;
+    height: 140px;
+    align-self: center;
+    overflow: hidden;
+}
+
+.appointment-trainer-image img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.appointment-trainer-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.appointment-trainer-name {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-dark);
+  margin: 0 0 2px 0;
+}
+
+.appointment-trainer-specialization {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: #6B7280;
+  margin: 0 0 6px 0;
+}
+
+.appointment-date {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark);
+  margin: 0 0 0 0;
+}
+
+.appointment-time {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.appointment-visit-type {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 64px;
+  width: 100%;
+}
+
+.back-to-dashboard-button {
+  flex: 1;
+  background-color: var(--color-main);
+  color: white;
+  border: none;
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-to-dashboard-button:hover {
+  background-color: var(--color-dark);
+}
+
+.add-to-calendar-button {
+  flex: 1;
+  background-color: white;
+  color: var(--color-main);
+  border: 1px solid var(--color-main);
+  border-radius: var(--button-border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-to-calendar-button:hover {
+  background-color: var(--color-light);
+}
+
