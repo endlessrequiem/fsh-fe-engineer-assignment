@@ -6,7 +6,7 @@ import {futureAppointments, parseAppointmentDateTime} from '../data/appointments
 import Header from './Header'
 import type { Appointment } from '../data/appointments'
 import {formatDate, formatTime} from "../consts/date.ts"
-import DeleteConfirmationDialog from './DeleteConfirmationDialog'
+import ConfirmationDialog from './ConfirmationDialog.tsx'
 import {Eyeglass} from "./svg/Eyeglass.tsx";
 
 function Dashboard() {
@@ -211,11 +211,15 @@ function Dashboard() {
           )}
         </div>
       </div>
-      <DeleteConfirmationDialog
+      <ConfirmationDialog
         isOpen={deleteConfirmation.isOpen}
         onClose={handleDeleteCancel}
-        onDelete={handleDeleteConfirm}
-        appointmentProviderName={deleteConfirmation.providerName}
+        closeText={"Go Back"}
+        closeStyling={"delete-confirmation-cancel-button"}
+        onAction={handleDeleteConfirm}
+        actionText={"Cancel Appointment"}
+        actionStyling={"delete-confirmation-delete-button"}
+        dialogText={`Are you sure you want to cancel your appointment with ${deleteConfirmation.providerName}?`}
       />
     </div>
   )

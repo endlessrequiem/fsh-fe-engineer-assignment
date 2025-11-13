@@ -10,15 +10,18 @@ interface CalendarProps {
 function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
+  //To make this calendar, start with a Date object, and figure out the day, month, and year
   const today = new Date()
   const year = currentMonth.getFullYear()
   const month = currentMonth.getMonth()
 
+  //To calculate how long each month is, we figure out what the first and last day will be, how many days there, and starting day of week
   const firstDayOfMonth = new Date(year, month, 1)
   const lastDayOfMonth = new Date(year, month + 1, 0)
   const daysInMonth = lastDayOfMonth.getDate()
   const startingDayOfWeek = firstDayOfMonth.getDay()
 
+  //Set Month names and Weekdays
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -26,6 +29,7 @@ function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
 
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
+  //Determine what days have passed, so that appointments cannot be made retroactively
   const isCurrentMonthOrEarlier = () => {
     const currentMonthDate = new Date(year, month, 1)
     const todayMonthDate = new Date(today.getFullYear(), today.getMonth(), 1)
@@ -69,6 +73,7 @@ function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
     return clickedDateOnly < todayDateOnly
   }
 
+  //Based off the Date object, we determine what any given month will look like, and which days have already passed
   const renderDays = () => {
     const days = []
 
@@ -113,6 +118,7 @@ function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
         </div>
       </div>
       <div className="calendar-weekdays">
+         {/* Renders the days of the week, i.e. M T W T F, at top of calendar */}
         {weekDays.map((day, index) => (
           <div key={index} className="calendar-weekday">{day}</div>
         ))}
