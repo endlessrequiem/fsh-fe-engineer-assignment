@@ -1,4 +1,4 @@
-Project for First Stop Health Code Challenge
+Project for FSH Code Challenge
 
 Link: https://endlessrequiem.github.io/fsh-fe-engineer-assignment/
 
