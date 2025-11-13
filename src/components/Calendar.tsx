@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import {ChevronLeft} from "../assets/ChevronLeft.tsx";
-import {ChevronRight} from "../assets/ChevronRight.tsx";
+import {ChevronLeft} from "./svg/ChevronLeft.tsx";
+import {ChevronRight} from "./svg/ChevronRight.tsx";
 
 interface CalendarProps {
   selectedDate: Date | null
@@ -46,7 +46,7 @@ function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
     const clickedDate = new Date(year, month, day)
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
     const clickedDateOnly = new Date(year, month, day)
-    
+
     // Allow today and future dates
     if (clickedDateOnly >= todayDateOnly) {
       onDateSelect(clickedDate)

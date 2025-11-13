@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setScreen, setEditingAppointment } from '../store/appointmentsSlice'
-import type { RootState } from '../store/store'
-import { trainers } from '../data/trainers'
-import Header from './Header'
-import {CircleConfirmed} from "../assets/CircleConfirmed.tsx";
-import {formatDate} from "../consts/date.ts";
+import { setScreen, setEditingAppointment } from '../../store/appointmentsSlice.ts'
+import type { RootState } from '../../store/store.ts'
+import { trainers } from '../../data/trainers.ts'
+import Header from '../Header.tsx'
+import {CircleConfirmed} from "./CircleConfirmed.tsx";
+import {formatDate} from "../../consts/date.ts";
 
 function AppointmentConfirmation() {
   const dispatch = useDispatch()
@@ -64,8 +64,8 @@ function AppointmentConfirmation() {
             </div>
           </div>
 
-          <div className="confirmation-buttons">
-            <button 
+          <div className="appointment-edit-buttons">
+            <button
               className="back-to-dashboard-button"
               onClick={() => {
                 dispatch(setEditingAppointment(null))
