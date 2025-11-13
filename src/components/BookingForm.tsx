@@ -12,12 +12,12 @@ function BookingForm() {
   const dispatch = useDispatch()
   const editingAppointment = useSelector((state: RootState) => state.appointments.editingAppointment)
   const existingAppointments = useSelector((state: RootState) => state.appointments.appointments)
-  
+
   const getInitialValues = () => {
     if (editingAppointment) {
       const appointmentDate = parseAppointmentDateTime(editingAppointment.date, editingAppointment.time)
-      const trainer = trainers.find(t => t.name === editingAppointment.providerName)
-      
+      const trainer = trainers.find(t => t.name === editingAppointment.trainer.name)
+
       return {
         date: appointmentDate,
         trainerId: trainer?.id || '',
@@ -30,7 +30,7 @@ function BookingForm() {
       time: ''
     }
   }
-  
+
   const initialValues = getInitialValues()
   const [selectedDate, setSelectedDate] = useState<Date | null>(initialValues.date)
   const [selectedTrainerId, setSelectedTrainerId] = useState<string>(initialValues.trainerId)
@@ -59,7 +59,7 @@ function BookingForm() {
     if (editingAppointment) {
       const updatedAppointment: Appointment = {
         id: editingAppointment.id,
-        providerName: selectedTrainer.name,
+        trainer: selectedTrainer,
         date: formatDateToString(selectedDate),
         time: selectedTime
       }
@@ -70,7 +70,7 @@ function BookingForm() {
     } else {
       const newAppointment: Appointment = {
         id: Date.now().toString(),
-        providerName: selectedTrainer.name,
+        trainer: selectedTrainer,
         date: formatDateToString(selectedDate),
         time: selectedTime
       }
@@ -105,10 +105,10 @@ function BookingForm() {
     return timeDate
   }
 
-  const filterAvailableTimeSlots = (timeSlots: string[], date: Date, trainerName: string): string[] => {
+  const filterAvailableTimeSlots = (timeSlots: string[], date: Date, trainerID: string): string[] => {
     const dateString = formatDateToString(date)
     const now = new Date()
-    
+
     return timeSlots.filter((time) => {
       // Filter out past times if it's today
       if (isToday(date)) {
@@ -117,22 +117,22 @@ function BookingForm() {
           return false
         }
       }
-      
+
       // Filter out times that are already booked for this trainer on this date
       const hasConflict = existingAppointments.some((appointment) => {
         // Skip the appointment we're currently editing (allow keeping the same time)
         if (editingAppointment && appointment.id === editingAppointment.id) {
           return false
         }
-        
+
         // Check if this appointment is for the same trainer, date, and time
         return (
-          appointment.providerName === trainerName &&
+          appointment.trainer.id === trainerID &&
           appointment.date === dateString &&
           appointment.time === time
         )
       })
-      
+
       return !hasConflict
     })
   }
@@ -155,15 +155,15 @@ function BookingForm() {
 
           <div className="booking-right">
             {(editingAppointment
-              ? trainers.filter(trainer => trainer.name === editingAppointment.providerName)
+              ? trainers.filter(trainer => trainer === editingAppointment.trainer)
               : trainers
             ).map((trainer) => {
               const allTimeSlots = selectedDate
-                ? getAvailableTimeSlotsForTrainer(trainer.id)
+                ? getAvailableTimeSlotsForTrainer()
                 : []
 
               const trainerTimeSlots = selectedDate
-                ? filterAvailableTimeSlots(allTimeSlots, selectedDate, trainer.name)
+                ? filterAvailableTimeSlots(allTimeSlots, selectedDate, trainer.id)
                 : []
 
               return (

@@ -1,6 +1,8 @@
+import {type Trainer, trainers} from "./trainers.ts";
+
 export type Appointment = {
     id: string
-    providerName: string
+    trainer: Trainer
     date: string
     time: string
 }
@@ -8,33 +10,33 @@ export type Appointment = {
 export const upcomingAppointments: Appointment[] = [
     {
         id: '1',
-        providerName: 'Nicole Smith',
+        trainer: trainers[0],
         date: '2026-01-16',
         time: '10:00 AM'
     },
     {
         id: '2',
-        providerName: 'John Brown',
+        trainer: trainers[1],
         date: '2026-01-16',
-        time: '2:30 PM'
+        time: '2:00 PM'
     },
     {
         id: '3',
-        providerName: 'Emily Davis',
+        trainer: trainers[2],
         date: '2026-01-17',
-        time: '9:15 AM'
+        time: '9:00 AM'
     },
     {
         id: '4',
-        providerName: 'Emily Davis',
+        trainer: trainers[2],
         date: '2025-11-10',
-        time: '9:15 AM'
+        time: '9:00 AM'
     },
     {
         id: '5',
-        providerName: 'John Brown',
+        trainer: trainers[1],
         date: '2025-11-11',
-        time: '9:15 AM'
+        time: '9:00 AM'
     },
 
 ]

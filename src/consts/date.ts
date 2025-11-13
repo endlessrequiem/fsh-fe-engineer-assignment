@@ -11,3 +11,11 @@ export const formatDate = (dateString: string): string => {
 
     return `${dayName}, ${month} ${day}, ${year}`
 }
+
+export const formatTime = (timeString: string): string => {
+    const [time, period] = timeString.split(' ')
+    const [hours, minutes] = time.split(':')
+    const hour = parseInt(hours)
+    const formattedHour = hour === 12 ? 12 : hour
+    return `${formattedHour}:${minutes}${period.toLowerCase()} (PT)`
+}

@@ -1,6 +1,6 @@
 import logo from '../assets/logo.png'
 import {UserIcon} from "./svg/UserIcon.tsx";
-import {HamburgerMenu} from "./HamburgerMenu.tsx";
+import {HamburgerMenu} from "./svg/HamburgerMenu.tsx";
 import {ChevronDown} from "./svg/ChevronDown.tsx";
 
 function Header() {
