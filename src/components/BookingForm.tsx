@@ -11,6 +11,7 @@ import { parseAppointmentDateTime } from '../data/appointments'
 function BookingForm() {
   const dispatch = useDispatch()
   const editingAppointment = useSelector((state: RootState) => state.appointments.editingAppointment)
+  const existingAppointments = useSelector((state: RootState) => state.appointments.appointments)
   
   const getInitialValues = () => {
     if (editingAppointment) {
@@ -104,15 +105,35 @@ function BookingForm() {
     return timeDate
   }
 
-  const filterAvailableTimeSlots = (timeSlots: string[], date: Date): string[] => {
-    if (!isToday(date)) {
-      return timeSlots
-    }
-
+  const filterAvailableTimeSlots = (timeSlots: string[], date: Date, trainerName: string): string[] => {
+    const dateString = formatDateToString(date)
     const now = new Date()
+    
     return timeSlots.filter((time) => {
-      const timeDate = parseTimeToDate(time, date)
-      return timeDate > now
+      // Filter out past times if it's today
+      if (isToday(date)) {
+        const timeDate = parseTimeToDate(time, date)
+        if (timeDate <= now) {
+          return false
+        }
+      }
+      
+      // Filter out times that are already booked for this trainer on this date
+      const hasConflict = existingAppointments.some((appointment) => {
+        // Skip the appointment we're currently editing (allow keeping the same time)
+        if (editingAppointment && appointment.id === editingAppointment.id) {
+          return false
+        }
+        
+        // Check if this appointment is for the same trainer, date, and time
+        return (
+          appointment.providerName === trainerName &&
+          appointment.date === dateString &&
+          appointment.time === time
+        )
+      })
+      
+      return !hasConflict
     })
   }
 
@@ -142,7 +163,7 @@ function BookingForm() {
                 : []
 
               const trainerTimeSlots = selectedDate
-                ? filterAvailableTimeSlots(allTimeSlots, selectedDate)
+                ? filterAvailableTimeSlots(allTimeSlots, selectedDate, trainer.name)
                 : []
 
               return (

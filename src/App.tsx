@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import type { RootState } from './store/store'
 import Dashboard from './components/Dashboard'
 import BookingForm from './components/BookingForm'
-import AppointmentConfirmation from './components/AppointmentConfirmation'
+import AppointmentConfirmation from './components/svg/AppointmentConfirmation.tsx'
 
 function App() {
   const currentScreen = useSelector((state: RootState) => state.appointments.currentScreen)

@@ -40,7 +40,7 @@ function Dashboard() {
       const time = formatTime(appointment.time).toLowerCase()
       const trainer = trainers.find(t => t.name === appointment.providerName)
       const specialization = trainer?.specialization.toLowerCase() || ''
-      
+
       return (
         providerName.includes(query) ||
         date.includes(query) ||
@@ -63,7 +63,7 @@ function Dashboard() {
       const dateB = parseAppointmentDateTime(b.date, b.time)
       return dateB.getTime() - dateA.getTime()
     })
-  
+
   const pastAppointments = filterAppointmentsBySearch(allPastAppointments)
 
   const handleAppointmentClick = (appointment: Appointment, e: React.MouseEvent) => {
@@ -181,7 +181,7 @@ function Dashboard() {
                     </div>
                     {isExpanded && (
                       <div className="appointment-card-expanded" onClick={(e) => e.stopPropagation()}>
-                          <div className="confirmation-buttons">
+                          <div className="appointment-edit-buttons">
                               <button
                                   className="edit-appointment-button"
                                   onClick={(e) => handleEditClick(appointment, e)}
