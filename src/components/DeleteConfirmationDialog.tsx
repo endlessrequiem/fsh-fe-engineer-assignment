@@ -20,13 +20,13 @@ function DeleteConfirmationDialog({ isOpen, onClose, onDelete, appointmentProvid
             className="delete-confirmation-cancel-button"
             onClick={onClose}
           >
-            Cancel
+            Go Back
           </button>
           <button
             className="delete-confirmation-delete-button"
             onClick={onDelete}
           >
-            Delete
+            Cancel Appointment
           </button>
         </div>
       </div>

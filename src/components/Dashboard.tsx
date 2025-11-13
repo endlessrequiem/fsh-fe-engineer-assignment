@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../store/store'
 import { setScreen, deleteAppointment, setEditingAppointment } from '../store/appointmentsSlice'
 import {futureAppointments, parseAppointmentDateTime} from '../data/appointments'
-import { trainers } from '../data/trainers'
 import Header from './Header'
 import type { Appointment } from '../data/appointments'
-import {formatDate} from "../consts/date.ts"
+import {formatDate, formatTime} from "../consts/date.ts"
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
+import {Eyeglass} from "./svg/Eyeglass.tsx";
 
 function Dashboard() {
   const dispatch = useDispatch()
@@ -21,13 +21,6 @@ function Dashboard() {
     providerName: ''
   })
 
-  const formatTime = (timeString: string): string => {
-    const [time, period] = timeString.split(' ')
-    const [hours, minutes] = time.split(':')
-    const hour = parseInt(hours)
-    return `${hour}:${minutes}${period.toLowerCase()} (PT)`
-  }
-
   const filterAppointmentsBySearch = (appointmentList: Appointment[]): Appointment[] => {
     if (!searchQuery.trim()) {
       return appointmentList
@@ -35,11 +28,11 @@ function Dashboard() {
 
     const query = searchQuery.toLowerCase().trim()
     return appointmentList.filter((appointment) => {
-      const providerName = appointment.providerName.toLowerCase()
+      const trainer = appointment.trainer.name
+      const providerName = trainer.toLowerCase()
       const date = formatDate(appointment.date).toLowerCase()
       const time = formatTime(appointment.time).toLowerCase()
-      const trainer = trainers.find(t => t.name === appointment.providerName)
-      const specialization = trainer?.specialization.toLowerCase() || ''
+      const specialization = appointment.trainer?.specialization?.toLowerCase() || ''
 
       return (
         providerName.includes(query) ||
@@ -80,7 +73,7 @@ function Dashboard() {
     setDeleteConfirmation({
       isOpen: true,
       appointmentId: appointment.id,
-      providerName: appointment.providerName
+      providerName: appointment.trainer.name,
     })
   }
 
@@ -117,29 +110,7 @@ function Dashboard() {
         </div>
         <div className="dashboard-search">
           <div className="search-input-wrapper">
-            <svg
-              className="search-icon"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                stroke="#9CA3AF"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M19 19L14.65 14.65"
-                stroke="#9CA3AF"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Eyeglass />
             <input
               type="text"
               className="search-input"
@@ -156,7 +127,7 @@ function Dashboard() {
           ) : (
             <div className="appointments-grid">
               {upcomingAppointments.map((appointment) => {
-                const trainer = trainers.find(t => t.name === appointment.providerName)
+                const trainer = appointment.trainer.name
                 const isExpanded = expandedAppointmentId === appointment.id
                 return (
                   <div
@@ -165,15 +136,15 @@ function Dashboard() {
                     onClick={(e) => handleAppointmentClick(appointment, e)}
                   >
                     <div className="appointment-card-main">
-                      {trainer?.imageUrl && (
+                      {appointment.trainer?.imageUrl && (
                         <div className="appointment-card-image">
-                          <img src={trainer.imageUrl} alt={trainer.name} />
+                          <img src={appointment.trainer?.imageUrl} alt={appointment.trainer.name} />
                         </div>
                       )}
                       <div className="appointment-card-content">
-                        <h3 className="appointment-card-name">{appointment.providerName}</h3>
+                        <h3 className="appointment-card-name">{appointment.trainer.name}</h3>
                         {trainer && (
-                          <p className="appointment-card-specialization">{trainer.specialization}</p>
+                          <p className="appointment-card-specialization">{appointment.trainer.specialization}</p>
                         )}
                         <p className="appointment-card-date">{formatDate(appointment.date)}</p>
                         <p className="appointment-card-time">{formatTime(appointment.time)}</p>
@@ -211,7 +182,7 @@ function Dashboard() {
           ) : (
             <div className="appointments-grid">
               {pastAppointments.map((appointment) => {
-                const trainer = trainers.find(t => t.name === appointment.providerName)
+                const trainer = appointment.trainer.name
                 return (
                   <div
                     key={appointment.id}
@@ -219,15 +190,15 @@ function Dashboard() {
                     onClick={(e) => handleAppointmentClick(appointment, e)}
                   >
                     <div className="appointment-card-main">
-                      {trainer?.imageUrl && (
+                      {appointment.trainer?.imageUrl && (
                         <div className="appointment-card-image">
-                          <img src={trainer.imageUrl} alt={trainer.name} />
+                          <img src={appointment.trainer.imageUrl} alt={appointment.trainer.name} />
                         </div>
                       )}
                       <div className="appointment-card-content">
-                        <h3 className="appointment-card-name">{appointment.providerName}</h3>
+                        <h3 className="appointment-card-name">{appointment.trainer.name}</h3>
                         {trainer && (
-                          <p className="appointment-card-specialization">{trainer.specialization}</p>
+                          <p className="appointment-card-specialization">{appointment.trainer.specialization}</p>
                         )}
                         <p className="appointment-card-date">{formatDate(appointment.date)}</p>
                         <p className="appointment-card-time">{formatTime(appointment.time)}</p>

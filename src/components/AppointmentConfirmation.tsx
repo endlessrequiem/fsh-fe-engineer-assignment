@@ -1,39 +1,31 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setScreen, setEditingAppointment } from '../../store/appointmentsSlice.ts'
-import type { RootState } from '../../store/store.ts'
-import { trainers } from '../../data/trainers.ts'
-import Header from '../Header.tsx'
-import {CircleConfirmed} from "./CircleConfirmed.tsx";
-import {formatDate} from "../../consts/date.ts";
+import { setScreen, setEditingAppointment } from '../store/appointmentsSlice.ts'
+import type { RootState } from '../store/store.ts'
+import Header from './Header.tsx'
+import {CircleConfirmed} from "./svg/CircleConfirmed.tsx";
+import {formatDate, formatTime} from "../consts/date.ts";
 
 function AppointmentConfirmation() {
   const dispatch = useDispatch()
   const lastBookedAppointment = useSelector((state: RootState) => state.appointments.lastBookedAppointment)
 
-  const formatTime = (timeString: string): string => {
-    const [time, period] = timeString.split(' ')
-    const [hours, minutes] = time.split(':')
-    const hour = parseInt(hours)
-    const formattedHour = hour === 12 ? 12 : hour
-    return `${formattedHour}:${minutes}${period.toLowerCase()} (PT)`
-  }
-
+  //If the selector were to fail in retrieving the appointment that was just booked, we would need to inform the user
   if (!lastBookedAppointment) {
     return (
       <div className="confirmation-page">
         <Header />
         <div className="confirmation-container">
           <div className="confirmation-card">
-            <h1>Appointment Confirmation</h1>
-            <p>No appointment found.</p>
-            <button onClick={() => dispatch(setScreen('list'))}>Back to Dashboard</button>
+            <h1>Appointment Booking Failed</h1>
+            <p>Try again, contact support if this issue persists.</p>
+            <button onClick={() => dispatch(setScreen('dashboard'))}>Back to Dashboard</button>
           </div>
         </div>
       </div>
     )
   }
 
-  const trainer = trainers.find(t => t.name === lastBookedAppointment.providerName)
+  const trainer = lastBookedAppointment.trainer
 
   return (
     <div className="confirmation-page">
@@ -53,8 +45,8 @@ function AppointmentConfirmation() {
                 </div>
               )}
               <div className="appointment-trainer-details">
-                <h3 className="appointment-trainer-name">{lastBookedAppointment.providerName}</h3>
-                {trainer && (
+                <h3 className="appointment-trainer-name">{lastBookedAppointment.trainer.name}</h3>
+                {trainer?.specialization && (
                   <p className="appointment-trainer-specialization">{trainer.specialization}</p>
                 )}
                   <p className="appointment-date">{formatDate(lastBookedAppointment.date)}</p>
@@ -77,7 +69,6 @@ function AppointmentConfirmation() {
             <button
               className="add-to-calendar-button"
               onClick={() => {
-                // Add to calendar functionality can be implemented here
                 console.log('Add to calendar')
               }}
             >
