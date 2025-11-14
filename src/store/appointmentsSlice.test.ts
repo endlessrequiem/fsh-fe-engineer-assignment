@@ -4,7 +4,7 @@ import appointmentsReducer, {
   updateAppointment,
   setLastBookedAppointment,
 } from './appointmentsSlice.ts'
-import type { Appointment } from '../data/appointments.ts'
+import type { Appointment } from '../types/appointment.ts'
 import { trainers } from '../data/trainers.ts'
 
 describe('Appointments Slice', () => {
@@ -79,10 +79,9 @@ describe('Appointments Slice', () => {
         editingAppointment: null,
       }
 
-      // Check if the appointment exists
+      // Check if the appointment exists (checking date and time only, regardless of trainer)
       const hasConflict = initialState.appointments.some(
         (appointment) =>
-          appointment.trainer.id === existingAppointment.trainer.id &&
           appointment.date === existingAppointment.date &&
           appointment.time === existingAppointment.time
       )
@@ -90,7 +89,7 @@ describe('Appointments Slice', () => {
       expect(hasConflict).toBe(true)
     })
 
-    it('should detect conflicts for the same trainer, date, and time', () => {
+    it('should detect conflicts for the same date and time across all trainers', () => {
       const bookedAppointment: Appointment = {
         id: 'booked-1',
         trainer: trainers[0],
@@ -106,17 +105,17 @@ describe('Appointments Slice', () => {
         editingAppointment: null,
       }
 
-      // Try to book the same slot
+      // Try to book the same slot with a different trainer
       const conflictingAppointment: Appointment = {
         id: 'conflict-1',
-        trainer: trainers[0], // Same trainer
+        trainer: trainers[1], // Different trainer
         date: '2026-01-21', // Same date
         time: '2:00 PM', // Same time
       }
 
+      // Should detect conflict even with different trainer
       const hasConflict = initialState.appointments.some(
         (appointment) =>
-          appointment.trainer.id === conflictingAppointment.trainer.id &&
           appointment.date === conflictingAppointment.date &&
           appointment.time === conflictingAppointment.time
       )

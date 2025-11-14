@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {ChevronLeft} from "./svg/ChevronLeft.tsx";
 import {ChevronRight} from "./svg/ChevronRight.tsx";
 
-interface CalendarProps {
+type CalendarProps = {
   selectedDate: Date | null
   onDateSelect: (date: Date) => void
 }
