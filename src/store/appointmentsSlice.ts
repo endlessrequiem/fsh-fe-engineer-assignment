@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { upcomingAppointments } from '../data/appointments'
-import type { Appointment } from '../data/appointments'
+import type { Appointment } from '../types/appointment'
 
 interface AppointmentsState {
   appointments: Appointment[]
@@ -27,7 +27,7 @@ const appointmentsSlice = createSlice({
       state.appointments.push(action.payload)
     },
     deleteAppointment: (state, action: PayloadAction<string>) => {
-      state.appointments = state.appointments.filter(appointment => appointment.id !== action.payload)
+      state.appointments = state.appointments.filter((appointment: Appointment) => appointment.id !== action.payload)
     },
     setScreen: (state, action: PayloadAction<'dashboard' | 'list' | 'booking' | 'confirmation' | 'appointmentDetail'>) => {
       state.currentScreen = action.payload
@@ -42,7 +42,7 @@ const appointmentsSlice = createSlice({
       state.editingAppointment = action.payload
     },
     updateAppointment: (state, action: PayloadAction<Appointment>) => {
-      const index = state.appointments.findIndex(apt => apt.id === action.payload.id)
+      const index = state.appointments.findIndex((apt: Appointment) => apt.id === action.payload.id)
       if (index !== -1) {
         state.appointments[index] = action.payload
       }

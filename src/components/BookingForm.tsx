@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
 import { addAppointment, updateAppointment, setScreen, setLastBookedAppointment, setEditingAppointment } from '../store/appointmentsSlice'
-import { trainers, getAvailableTimeSlotsForTrainer } from '../data/trainers'
-import type { Appointment } from '../data/appointments'
+import { trainers } from '../data/trainers'
 import Calendar from './Calendar'
 import Header from './Header'
-import { parseAppointmentDateTime } from '../data/appointments'
+import {getAvailableTimeSlotsForTrainer, parseAppointmentDateTime} from "../consts/appointments.ts";
+import type {Appointment} from "../types/appointment.ts";
+import {formatDateToString, isToday, parseTimeToDate} from "../consts/date.ts";
 
 function BookingForm() {
   const dispatch = useDispatch()
@@ -35,13 +36,6 @@ function BookingForm() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(initialValues.date)
   const [selectedTrainerId, setSelectedTrainerId] = useState<string>(initialValues.trainerId)
   const [selectedTime, setSelectedTime] = useState<string>(initialValues.time)
-
-  const formatDateToString = (date: Date): string => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date)
@@ -80,32 +74,7 @@ function BookingForm() {
     }
   }
 
-  const isToday = (date: Date): boolean => {
-    const today = new Date()
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    )
-  }
-
-  const parseTimeToDate = (timeString: string, date: Date): Date => {
-    const [time, period] = timeString.split(' ')
-    const [hours, minutes] = time.split(':').map(Number)
-
-    let hour24 = hours
-    if (period === 'PM' && hours !== 12) {
-      hour24 = hours + 12
-    } else if (period === 'AM' && hours === 12) {
-      hour24 = 0
-    }
-
-    const timeDate = new Date(date)
-    timeDate.setHours(hour24, minutes, 0, 0)
-    return timeDate
-  }
-
-  const filterAvailableTimeSlots = (timeSlots: string[], date: Date, trainerID: string): string[] => {
+  const filterAvailableTimeSlots = (timeSlots: string[], date: Date): string[] => {
     const dateString = formatDateToString(date)
     const now = new Date()
 
@@ -118,16 +87,15 @@ function BookingForm() {
         }
       }
 
-      // Filter out times that are already booked for this trainer on this date
+      // Filter out times that are already booked for any trainer on this date
       const hasConflict = existingAppointments.some((appointment) => {
         // Skip the appointment we're currently editing (allow keeping the same time)
         if (editingAppointment && appointment.id === editingAppointment.id) {
           return false
         }
 
-        // Check if this appointment is for the same trainer, date, and time
+        // Check if any appointment exists for the same date and time (regardless of trainer)
         return (
-          appointment.trainer.id === trainerID &&
           appointment.date === dateString &&
           appointment.time === time
         )
@@ -163,7 +131,7 @@ function BookingForm() {
                 : []
 
               const trainerTimeSlots = selectedDate
-                ? filterAvailableTimeSlots(allTimeSlots, selectedDate, trainer.id)
+                ? filterAvailableTimeSlots(allTimeSlots, selectedDate)
                 : []
 
               return (

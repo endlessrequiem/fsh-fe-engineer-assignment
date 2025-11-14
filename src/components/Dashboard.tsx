@@ -1,17 +1,18 @@
+import * as React from "react";
+
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../store/store'
 import { setScreen, deleteAppointment, setEditingAppointment } from '../store/appointmentsSlice'
-import {futureAppointments, parseAppointmentDateTime} from '../data/appointments'
 import Header from './Header'
-import type { Appointment } from '../data/appointments'
 import {formatDate, formatTime} from "../consts/date.ts"
 import ConfirmationDialog from './ConfirmationDialog.tsx'
 import {Eyeglass} from "./svg/Eyeglass.tsx";
+import type {Appointment} from "../types/appointment.ts";
+import {allPastAppointments, filterAppointmentsBySearch, futureAppointments} from "../consts/appointments.ts";
 
 function Dashboard() {
   const dispatch = useDispatch()
-  const now = new Date()
   const appointments = useSelector((state: RootState) => state.appointments.appointments)
   const [expandedAppointmentId, setExpandedAppointmentId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -21,43 +22,9 @@ function Dashboard() {
     providerName: ''
   })
 
-  const filterAppointmentsBySearch = (appointmentList: Appointment[]): Appointment[] => {
-    if (!searchQuery.trim()) {
-      return appointmentList
-    }
-
-    const query = searchQuery.toLowerCase().trim()
-    return appointmentList.filter((appointment) => {
-      const trainer = appointment.trainer.name
-      const providerName = trainer.toLowerCase()
-      const date = formatDate(appointment.date).toLowerCase()
-      const time = formatTime(appointment.time).toLowerCase()
-      const specialization = appointment.trainer?.specialization?.toLowerCase() || ''
-
-      return (
-        providerName.includes(query) ||
-        date.includes(query) ||
-        time.includes(query) ||
-        specialization.includes(query)
-      )
-    })
-  }
-
   const allUpcomingAppointments = futureAppointments(appointments)
-  const upcomingAppointments = filterAppointmentsBySearch(allUpcomingAppointments)
-
-  const allPastAppointments = appointments
-    .filter((appointment) => {
-      const appointmentDateTime = parseAppointmentDateTime(appointment.date, appointment.time)
-      return appointmentDateTime.getTime() <= now.getTime()
-    })
-    .sort((a, b) => {
-      const dateA = parseAppointmentDateTime(a.date, a.time)
-      const dateB = parseAppointmentDateTime(b.date, b.time)
-      return dateB.getTime() - dateA.getTime()
-    })
-
-  const pastAppointments = filterAppointmentsBySearch(allPastAppointments)
+  const upcomingAppointments = filterAppointmentsBySearch(allUpcomingAppointments, searchQuery)
+  const pastAppointments = filterAppointmentsBySearch(allPastAppointments(appointments), searchQuery)
 
   const handleAppointmentClick = (appointment: Appointment, e: React.MouseEvent) => {
     e.stopPropagation()
