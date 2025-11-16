@@ -11,10 +11,6 @@ function BookingFormWrapper() {
 }
 
 function App() {
-  // Use Vite's BASE_URL which automatically handles the base path
-  // In production: '/fsh-fe-engineer-assignment' (for GitHub Pages)
-  // In development: '/' (root path for easier local testing)
-  // Remove trailing slash to match React Router's basename format
   const basename = import.meta.env.BASE_URL !== '/'
     ? import.meta.env.BASE_URL.replace(/\/$/, '')
     : undefined
