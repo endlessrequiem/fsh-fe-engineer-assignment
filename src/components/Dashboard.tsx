@@ -2,8 +2,9 @@ import * as React from "react";
 
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import type { RootState } from '../store/store'
-import { setScreen, deleteAppointment, setEditingAppointment } from '../store/appointmentsSlice'
+import { deleteAppointment } from '../store/appointmentsSlice'
 import Header from './Header'
 import {formatDate, formatTime} from "../consts/date.ts"
 import ConfirmationDialog from './ConfirmationDialog.tsx'
@@ -13,6 +14,7 @@ import {allPastAppointments, filterAppointmentsBySearch, futureAppointments} fro
 
 function Dashboard() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const appointments = useSelector((state: RootState) => state.appointments.appointments)
   const [expandedAppointmentId, setExpandedAppointmentId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -58,8 +60,7 @@ function Dashboard() {
 
   const handleEditClick = (appointment: Appointment, e: React.MouseEvent) => {
     e.stopPropagation()
-    dispatch(setEditingAppointment(appointment))
-    dispatch(setScreen('booking'))
+    navigate(`/booking/${appointment.id}`)
   }
 
   return (
@@ -70,7 +71,7 @@ function Dashboard() {
           <h1 className="dashboard-title">Dashboard</h1>
           <button
             className="book-appointment-button"
-            onClick={() => dispatch(setScreen('booking'))}
+            onClick={() => navigate('/booking')}
           >
             Book New Appointment
           </button>

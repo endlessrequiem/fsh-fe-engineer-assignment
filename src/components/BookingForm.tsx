@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import type { RootState } from '../store/store'
-import { addAppointment, updateAppointment, setScreen, setLastBookedAppointment, setEditingAppointment } from '../store/appointmentsSlice'
+import { addAppointment, updateAppointment } from '../store/appointmentsSlice'
 import { trainers } from '../data/trainers'
 import Calendar from './Calendar'
 import Header from './Header'
@@ -11,10 +12,18 @@ import {formatDateToString, isToday, parseTimeToDate} from "../consts/date.ts";
 
 function BookingForm() {
   const dispatch = useDispatch()
-  const editingAppointment = useSelector((state: RootState) => state.appointments.editingAppointment)
+  const navigate = useNavigate()
+  const { appointmentId } = useParams<{ appointmentId?: string }>()
   const existingAppointments = useSelector((state: RootState) => state.appointments.appointments)
 
-  const getInitialValues = () => {
+  const editingAppointment = useMemo(() => {
+    return appointmentId
+      ? existingAppointments.find(apt => apt.id === appointmentId) || null
+      : null
+  }, [appointmentId, existingAppointments])
+
+  // Compute initial values based on editingAppointment
+  const initialValues = useMemo(() => {
     if (editingAppointment) {
       const appointmentDate = parseAppointmentDateTime(editingAppointment.date, editingAppointment.time)
       const trainer = trainers.find(t => t.name === editingAppointment.trainer.name)
@@ -30,12 +39,11 @@ function BookingForm() {
       trainerId: '',
       time: ''
     }
-  }
+  }, [editingAppointment])
 
-  const initialValues = getInitialValues()
-  const [selectedDate, setSelectedDate] = useState<Date | null>(initialValues.date)
-  const [selectedTrainerId, setSelectedTrainerId] = useState<string>(initialValues.trainerId)
-  const [selectedTime, setSelectedTime] = useState<string>(initialValues.time)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(() => initialValues.date)
+  const [selectedTrainerId, setSelectedTrainerId] = useState<string>(() => initialValues.trainerId)
+  const [selectedTime, setSelectedTime] = useState<string>(() => initialValues.time)
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date)
@@ -58,9 +66,7 @@ function BookingForm() {
         time: selectedTime
       }
       dispatch(updateAppointment(updatedAppointment))
-      dispatch(setLastBookedAppointment(updatedAppointment))
-      dispatch(setEditingAppointment(null))
-      dispatch(setScreen('confirmation'))
+      navigate('/confirmation', { state: { appointment: updatedAppointment } })
     } else {
       const newAppointment: Appointment = {
         id: Date.now().toString(),
@@ -69,8 +75,7 @@ function BookingForm() {
         time: selectedTime
       }
       dispatch(addAppointment(newAppointment))
-      dispatch(setLastBookedAppointment(newAppointment))
-      dispatch(setScreen('confirmation'))
+      navigate('/confirmation', { state: { appointment: newAppointment } })
     }
   }
 

@@ -2,7 +2,6 @@ import appointmentsReducer, {
   addAppointment,
   deleteAppointment,
   updateAppointment,
-  setLastBookedAppointment,
 } from './appointmentsSlice.ts'
 import type { Appointment } from '../types/appointment.ts'
 import { trainers } from '../data/trainers.ts'
@@ -26,10 +25,6 @@ describe('Appointments Slice', () => {
     it('should add a new appointment to the appointments array', () => {
       const initialState = {
         appointments: [],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       const action = addAppointment(mockAppointment)
@@ -41,24 +36,6 @@ describe('Appointments Slice', () => {
       expect(state.appointments[0].trainer).toEqual(trainers[0])
       expect(state.appointments[0].date).toBe('2026-01-20')
       expect(state.appointments[0].time).toBe('10:00 AM')
-    })
-
-    it('should set the last booked appointment when booking', () => {
-      const initialState = {
-        appointments: [],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
-      }
-
-      const addAction = addAppointment(mockAppointment)
-      const stateAfterAdd = appointmentsReducer(initialState, addAction)
-
-      const setLastAction = setLastBookedAppointment(mockAppointment)
-      const finalState = appointmentsReducer(stateAfterAdd, setLastAction)
-
-      expect(finalState.lastBookedAppointment).toEqual(mockAppointment)
     })
   })
 
@@ -73,10 +50,6 @@ describe('Appointments Slice', () => {
 
       const initialState = {
         appointments: [existingAppointment],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       // Check if the appointment exists (checking date and time only, regardless of trainer)
@@ -99,10 +72,6 @@ describe('Appointments Slice', () => {
 
       const initialState = {
         appointments: [bookedAppointment],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       // Try to book the same slot with a different trainer
@@ -128,10 +97,6 @@ describe('Appointments Slice', () => {
     it('should update an existing appointment', () => {
       const initialState = {
         appointments: [mockAppointment],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       const updatedAppointment: Appointment = {
@@ -152,10 +117,6 @@ describe('Appointments Slice', () => {
     it('should update only the specified appointment when multiple exist', () => {
       const initialState = {
         appointments: [mockAppointment, mockAppointment2],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       const updatedAppointment: Appointment = {
@@ -176,10 +137,6 @@ describe('Appointments Slice', () => {
     it('should remove an appointment by ID', () => {
       const initialState = {
         appointments: [mockAppointment, mockAppointment2],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       const action = deleteAppointment('test-1')
@@ -200,10 +157,6 @@ describe('Appointments Slice', () => {
 
       const initialState = {
         appointments: [mockAppointment, mockAppointment2, thirdAppointment],
-        currentScreen: 'dashboard' as const,
-        lastBookedAppointment: null,
-        selectedAppointment: null,
-        editingAppointment: null,
       }
 
       const action = deleteAppointment('test-2')

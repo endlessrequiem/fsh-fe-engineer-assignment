@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { setScreen, setEditingAppointment } from '../store/appointmentsSlice.ts'
-import type { RootState } from '../store/store.ts'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Header from './Header.tsx'
 import {CircleConfirmed} from "./svg/CircleConfirmed.tsx";
 import {formatDate, formatTime} from "../consts/date.ts";
+import type { Appointment } from '../types/appointment.ts'
 
 function AppointmentConfirmation() {
-  const dispatch = useDispatch()
-  const lastBookedAppointment = useSelector((state: RootState) => state.appointments.lastBookedAppointment)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const lastBookedAppointment = (location.state as { appointment?: Appointment })?.appointment || null
 
   //If the selector were to fail in retrieving the appointment that was just booked, we would need to inform the user
   if (!lastBookedAppointment) {
@@ -16,9 +16,9 @@ function AppointmentConfirmation() {
         <Header />
         <div className="confirmation-container">
           <div className="confirmation-card">
-            <h1>Appointment Booking Failed</h1>
+            <h1 className="confirmation-title">Appointment Booking Failed</h1>
             <p>Try again, contact support if this issue persists.</p>
-            <button onClick={() => dispatch(setScreen('dashboard'))}>Back to Dashboard</button>
+            <button className="back-to-dashboard-button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
           </div>
         </div>
       </div>
@@ -59,10 +59,7 @@ function AppointmentConfirmation() {
           <div className="appointment-edit-buttons">
             <button
               className="back-to-dashboard-button"
-              onClick={() => {
-                dispatch(setEditingAppointment(null))
-                dispatch(setScreen('dashboard'))
-              }}
+              onClick={() => navigate('/dashboard')}
             >
               Back to Dashboard
             </button>
