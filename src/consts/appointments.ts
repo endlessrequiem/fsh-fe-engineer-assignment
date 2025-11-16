@@ -1,7 +1,19 @@
 import {formatDate, formatTime} from "./date.ts";
 import type {Appointment} from "../types/appointment.ts";
+import {useSelector} from "react-redux";
+import type {RootState} from "../store/store.ts";
 
 const now = new Date()
+
+export const useGetAppointments = (searchQuery: string) => {
+    const appointments = useSelector((state: RootState) => state.appointments.appointments)
+
+    const allUpcomingAppointments = futureAppointments(appointments)
+    const upcomingAppointments = filterAppointmentsBySearch(allUpcomingAppointments, searchQuery)
+    const pastAppointments = filterAppointmentsBySearch(allPastAppointments(appointments), searchQuery)
+
+    return {upcomingAppointments, pastAppointments};
+}
 
 export const futureAppointments = (appointments: Appointment[]) => {
     return appointments.filter((appointment) => {

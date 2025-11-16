@@ -1,21 +1,19 @@
 import * as React from "react";
 
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import type { RootState } from '../store/store'
 import { deleteAppointment } from '../store/appointmentsSlice'
 import Header from './Header'
 import {formatDate, formatTime} from "../consts/date.ts"
 import ConfirmationDialog from './ConfirmationDialog.tsx'
 import {Eyeglass} from "./svg/Eyeglass.tsx";
 import type {Appointment} from "../types/appointment.ts";
-import {allPastAppointments, filterAppointmentsBySearch, futureAppointments} from "../consts/appointments.ts";
+import { useGetAppointments } from "../consts/appointments.ts";
 
 function Dashboard() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const appointments = useSelector((state: RootState) => state.appointments.appointments)
   const [expandedAppointmentId, setExpandedAppointmentId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ isOpen: boolean; appointmentId: string | null; providerName: string }>({
@@ -23,10 +21,7 @@ function Dashboard() {
     appointmentId: null,
     providerName: ''
   })
-
-  const allUpcomingAppointments = futureAppointments(appointments)
-  const upcomingAppointments = filterAppointmentsBySearch(allUpcomingAppointments, searchQuery)
-  const pastAppointments = filterAppointmentsBySearch(allPastAppointments(appointments), searchQuery)
+  const {upcomingAppointments, pastAppointments} = useGetAppointments(searchQuery);
 
   const handleAppointmentClick = (appointment: Appointment, e: React.MouseEvent) => {
     e.stopPropagation()
