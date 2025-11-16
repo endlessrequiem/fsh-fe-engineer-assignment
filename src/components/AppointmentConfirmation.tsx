@@ -18,7 +18,7 @@ function AppointmentConfirmation() {
           <div className="confirmation-card">
             <h1 className="confirmation-title">Appointment Booking Failed</h1>
             <p>Try again, contact support if this issue persists.</p>
-            <button className="back-to-dashboard-button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
+            <button className="back-to-dashboard-button" onClick={() => navigate('/')}>Back to Dashboard</button>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@ function AppointmentConfirmation() {
           <div className="appointment-edit-buttons">
             <button
               className="back-to-dashboard-button"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/')}
             >
               Back to Dashboard
             </button>

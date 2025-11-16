@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import BookingForm from './components/BookingForm'
 import AppointmentConfirmation from './components/AppointmentConfirmation.tsx'
@@ -15,22 +15,20 @@ function App() {
   // In production: '/fsh-fe-engineer-assignment' (for GitHub Pages)
   // In development: '/' (root path for easier local testing)
   // Remove trailing slash to match React Router's basename format
-  const basename = import.meta.env.BASE_URL !== '/' 
-    ? import.meta.env.BASE_URL.replace(/\/$/, '') 
+  const basename = import.meta.env.BASE_URL !== '/'
+    ? import.meta.env.BASE_URL.replace(/\/$/, '')
     : undefined
-  
+
   return (
     <BrowserRouter basename={basename}>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route 
-          path="/booking/:appointmentId" 
-          element={<BookingFormWrapper />} 
+        <Route path="/" element={<Dashboard />} />
+        <Route
+          path="/booking/:appointmentId"
+          element={<BookingFormWrapper />}
         />
         <Route path="/booking" element={<BookingForm />} />
         <Route path="/confirmation" element={<AppointmentConfirmation />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   )
