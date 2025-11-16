@@ -14,6 +14,7 @@ Uses
 - TypeScript
 - Vite
 - Redux
+- React Router
 - Jest (tests)
 
 If you want to run it locally, you just to run the below command 
